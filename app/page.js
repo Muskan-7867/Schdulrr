@@ -1,4 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
+import { Button } from "../components/ui/button";
+import { ArrowBigRight } from "lucide-react";
 
 
 export default function Home() {
@@ -10,6 +13,11 @@ export default function Home() {
             Simplify your Scheduling!!</h1>
           <p className="text-xl text-gray-600 mb-10">Schedulrr helps to manage  your time effectively. Create events, set your
             availability, and let others book time with you seamlessely. </p>
+
+            <Link href='/dashboard' >
+              <Button size='lg' className='text-lg'>
+                Get Started <ArrowBigRight className="w-5 h-5 ml-2"/></Button>
+            </Link>
         </div>
 
           <div className="lg:w-1/2 flex justify-center ">

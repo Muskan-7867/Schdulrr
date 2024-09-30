@@ -3,7 +3,10 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "./ui/button";
 import { PenBox } from "lucide-react";
-import { SignedIn, SignedOut,  SignInButton, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut,  SignInButton } from "@clerk/nextjs";
+import UserMenu from "./UserMenu";
+
+
 
 const Header = () => {
   return (
@@ -34,7 +37,7 @@ const Header = () => {
         </SignedOut>
 
         <SignedIn>
-          <UserButton />
+          <UserMenu/>
         </SignedIn>
       </div>
     </nav>

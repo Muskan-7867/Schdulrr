@@ -1,5 +1,5 @@
 "use client"
-import { UserButton } from '@clerk/nextjs'
+import { UserButton , UserButtonAction} from '@clerk/nextjs'
 import { ChartNoAxesColumn } from 'lucide-react'
 import React from 'react'
 

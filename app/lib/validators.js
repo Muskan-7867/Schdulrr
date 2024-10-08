@@ -11,19 +11,19 @@ export const usernameSchema = z.object({
         }),
 });
 
-
- export const eventSchema =z.object({
+// Define the event schema
+export const eventSchema = z.object({
     title: z
-    .string()
-    .min(1, "Title is required")
-    .max(100,"Title must be 100 characters or less"),
+        .string()
+        .min(1, { message: "Title is required" })
+        .max(100, { message: "Title must be 100 characters or less" }),
     description: z
-    .string()
-    .min(1, "Description is required")
-    .max(500,"Description must be 100 characters or less"),
-    duration: z.number().int().positive("Duration must be positive number"),
-
+        .string()
+        .min(1, { message: "Description is required" })
+        .max(500, { message: "Description must be 500 characters or less" }), 
+    duration: z
+        .number()
+        .int({ message: "Duration must be an integer" }) 
+        .positive({ message: "Duration must be a positive number" }), 
     isPrivate: z.boolean(),
-})
-
-
+});

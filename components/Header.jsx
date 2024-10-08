@@ -12,7 +12,7 @@ import  { checkuser } from '/lib/checkuser';
 const Header = async () => {
   await checkuser();
   return (
-    <nav className="flex justify-between py-2 px-4 mx-auto ">
+    <nav className="flex justify-between py-2 px-4 mx-auto bg-white ">
       <Link href={"/"} className="flex items-center">
         <Image
           src="/logo.png"

@@ -1,5 +1,7 @@
 
 import Header from "../components/Header";
+import CreateEventDrawer from '../components/createEventDrawer';
+
 
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -22,6 +24,7 @@ export default function RootLayout({ children }) {
             <p>Made by Me</p>
           </div>
         </footer>
+        <CreateEventDrawer />
       </body>
     </html>
     </ClerkProvider>

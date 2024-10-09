@@ -1,3 +1,6 @@
+"use client"
+import { Link, Trash2 } from "lucide-react";
+import { Button } from "./ui/button";
 import {
   Card,
   CardContent,
@@ -6,8 +9,23 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-const EventCard = ({ event, username }) => {
+const EventCard = ({ event, username, isPublic= false }) => {
+    const[IsCopied, setIsCopied] = useState(false)
+    const router = useRouter()
+
+
+    const handleCopy= async () => {
+     try {
+        await navigator.clipboard.writeText(`${window.location.origin}/${username}/${event.id}`);
+        setIsCopied(true)
+        setTimeout(() => setIsCopied(false), 2000)
+     } catch (error) {
+        console.log("Failed to copy", error)
+     }
+    }
     return (
       <Card className="flex flex-col justify-between cursor-pointer">
         <CardHeader>
@@ -31,9 +49,16 @@ const EventCard = ({ event, username }) => {
               : "No description available"}
           </p>
         </CardContent>
-        <CardFooter>
-          <p>Card Footer</p>
+      {!isPublic &&(
+          <CardFooter className='flex gap-2'>
+            <Button variant='outline' className='flex items-center' onClick={handleCopy}>
+                <Link className="mr-2 h-4 w-4"/>{IsCopied ? "Copied!" : "Copy Link"}
+            </Button>
+            <Button variant='destructive'  className='flex items-center'>
+                <Trash2  className="mr-2 h-4 w-4"/>Delete
+            </Button>
         </CardFooter>
+        )}
       </Card>
     );
   };

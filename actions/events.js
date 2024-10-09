@@ -1,6 +1,6 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
-import { eventSchema } from "../app/lib/validators"; // Ensure this path is correct
+import { eventSchema } from "../app/lib/validators"; 
 import { db } from "../lib/prisma";
 
 export async function CreateEvent(data) {
@@ -65,4 +65,34 @@ export async function getUserEvents() {
   });
 
   return { events, username: user.username};
+}
+
+export async function deleteEvent(eventId) {
+  const { userId } = auth();
+
+  // Check if the user is authenticated
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+  const user = await db.user.findUnique({
+    where: { clerkuserid: userId },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const event = await db.event.findUnique({
+    where: {id: eventId}
+  });
+
+  if(!event || event.userId !== user.id){
+    throw new Error("Event not found or unauthorized");
+  }
+
+  await db.event.delete({
+    where: {id: eventId}
+  })
+
+  return { success: true };
 }

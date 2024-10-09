@@ -15,7 +15,6 @@ export async function CreateEvent(data) {
   let validatedData;
   try {
     validatedData = await eventSchema.parseAsync(data);
-    console.log("validate data", validatedData);
   } catch (error) {
     throw new Error(`Validation failed: ${error.message}`);
   }
@@ -24,8 +23,6 @@ export async function CreateEvent(data) {
   const user = await db.user.findUnique({
     where: { clerkuserid: userId },
   });
-
-  console.log("userfrom db ", user);
 
   if (!user) {
     throw new Error("User not found");
@@ -39,7 +36,33 @@ export async function CreateEvent(data) {
     },
   });
 
-  console.log("event", event);
-
   return event; // Return the newly created event
+}
+
+export async function getUserEvents() {
+  const { userId } = auth();
+
+  // Check if the user is authenticated
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+  const user = await db.user.findUnique({
+    where: { clerkuserid: userId },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const events = await db.event.findMany({
+    where: {userId: user.id},
+    orderBy: {createdAt: "desc"},
+    include: {
+      _count : {
+        select : {bookings: true},
+      },
+    }
+  });
+
+  return { events, username: user.username};
 }

@@ -1,8 +1,10 @@
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { eventSchema } from "../app/lib/validators";
+import {eventSchema} from "../app/lib/validators";
 import { Input } from "../components/ui/input";
+import { CreateEvent } from '../actions/events';
+import useFetch from '../hooks/usefetch';
 import {
   Select,
   SelectContent,
@@ -11,8 +13,10 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
-const EventForm = () => {
+const EventForm = ({ onSubmitForm }) => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -25,50 +29,50 @@ const EventForm = () => {
       isPrivate: true,
     },
   });
+
+  const { loading, error, fn: funccreateEvent } = useFetch(CreateEvent);
+
+  const onSubmit = async (data) => {
+    try {
+      await funccreateEvent(data);
+      if (!loading && !error) {
+        onSubmitForm();
+        router.refresh();
+      }
+    } catch (err) {
+      console.error("Event creation failed", err);
+    }
+  };
+
   return (
-    <form className="px-6 flex flex-col gap-4">
+    <form className="px-6 flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <label
-          htmlFor="title"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="title" className="block text-sm font-medium text-gray-700">
           Event Title
         </label>
-
         <Input id="title" {...register("title")} className="mt-1" />
         {errors.title && (
           <p className="text-red-600 text-sm ml-1">{errors.title.message}</p>
         )}
       </div>
+
       <div>
-        <label
-          htmlFor="description"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
           Event Description
         </label>
-
         <Input id="description" {...register("description")} className="mt-1" />
         {errors.description && (
-          <p className="text-red-600 text-sm ml-1">
-            {errors.description.message}
-          </p>
+          <p className="text-red-600 text-sm ml-1">{errors.description.message}</p>
         )}
       </div>
 
       <div>
-        <label
-          htmlFor="duration"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="duration" className="block text-sm font-medium text-gray-700">
           Duration (minutes)
         </label>
-
         <Input
           id="duration"
-          {...register("duration", {
-            valueAsNumber: true,
-          })}
+          {...register("duration", { valueAsNumber: true })}
           type="number"
           className="mt-1"
         />
@@ -78,18 +82,17 @@ const EventForm = () => {
       </div>
 
       <div>
-        <label
-          htmlFor="isPrivate"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="isPrivate" className="block text-sm font-medium text-gray-700">
           Event Privacy
         </label>
         <Controller
-          name="isPrivate "
+          name="isPrivate"
           control={control}
-          render={({field}) => (
-            <Select value={field.value? "true" : "false"}
-             onValueChange={(value) => field.onChange(value === "true")}>
+          render={({ field }) => (
+            <Select
+              value={field.value ? "true" : "false"}
+              onValueChange={(value) => field.onChange(value === "true")}
+            >
               <SelectTrigger className="mt-1">
                 <SelectValue placeholder="Select privacy" />
               </SelectTrigger>
@@ -100,14 +103,16 @@ const EventForm = () => {
             </Select>
           )}
         />
-
         {errors.isPrivate && (
-          <p className="text-red-600 text-sm ml-1">
-            {errors.isPrivate.message}
-          </p>
+          <p className="text-red-600 text-sm ml-1">{errors.isPrivate.message}</p>
         )}
       </div>
-      <Button  type='submit'>Submit</Button>
+
+      {error && <p className="text-red-600 text-sm ml-1">{error.message}</p>}
+
+      <Button type="submit" disabled={loading}>
+        {loading ? "Creating Event..." : "Create Event"}
+      </Button>
     </form>
   );
 };

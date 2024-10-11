@@ -8,6 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { timeSlots } from "../data";
 import { Input } from "../../../../components/ui/input";
 import { Button } from "../../../../components/ui/button";
+import useFetch from "../../../../hooks/usefetch";
+import { updateAvailability } from "../../../../actions/availability";
 
 // Custom Checkbox Component (Fallback)
 const CustomCheckbox = ({ checked, onCheckedChange }) => (
@@ -25,8 +27,10 @@ const AvailabilityForm = ({ initialData, minutes = 15 }) => {  // Set default mi
     defaultValues: { ...initialData },
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const { fn : fnupdateAvailability, loading, error } = useFetch(updateAvailability) 
+
+  const onSubmit = async (data) => {
+    await fnupdateAvailability(data);
   };
 
   return (
@@ -127,7 +131,10 @@ const AvailabilityForm = ({ initialData, minutes = 15 }) => {  // Set default mi
           </span>
         )}
       </div>
-      <Button type='submit' className='mt-5'>Update Availability</Button>
+      {error && <div className="text-red-500 text-sm">{error?.message}</div>}
+      <Button type='submit' className='mt-5' disabled={loading}>
+        {loading ? "Updating...": "Update Availability" }
+      </Button>
     </form>
   );
 };

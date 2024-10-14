@@ -46,6 +46,7 @@ export async function getUserEvents() {
   if (!userId) {
     throw new Error("Unauthorized");
   }
+
   const user = await db.user.findUnique({
     where: { clerkuserid: userId },
   });
@@ -55,16 +56,16 @@ export async function getUserEvents() {
   }
 
   const events = await db.event.findMany({
-    where: {userId: user.id},
-    orderBy: {createdAt: "desc"},
+    where: { userId: user.id },
+    orderBy: { createdAt: "desc" },
     include: {
-      _count : {
-        select : {bookings: true},
+      _count: {
+        select: { bookings: true },
       },
-    }
+    },
   });
 
-  return { events, username: user.username};
+  return { events, username: user.username };
 }
 
 export async function deleteEvent(eventId) {
@@ -74,6 +75,7 @@ export async function deleteEvent(eventId) {
   if (!userId) {
     throw new Error("Unauthorized");
   }
+
   const user = await db.user.findUnique({
     where: { clerkuserid: userId },
   });
@@ -83,16 +85,44 @@ export async function deleteEvent(eventId) {
   }
 
   const event = await db.event.findUnique({
-    where: {id: eventId}
+    where: { id: eventId },
   });
 
-  if(!event || event.userId !== user.id){
+  if (!event || event.userId !== user.id) {
     throw new Error("Event not found or unauthorized");
   }
 
   await db.event.delete({
-    where: {id: eventId}
-  })
+    where: { id: eventId },
+  });
 
   return { success: true };
+}
+
+export async function getEventDetails(username, eventId) {
+  // Fetch event details based on the event ID and associated username
+  const event = await db.event.findFirst({
+    where: {
+      id: eventId,
+      user: {
+        username: username,
+      },
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true,
+          username: true,
+          imageUrl: true,
+        },
+      },
+    },
+  });
+
+  if (!event) {
+    throw new Error("Event not found or does not belong to the specified user");
+  }
+
+  return event;
 }

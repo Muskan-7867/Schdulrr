@@ -1,12 +1,11 @@
-
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { getEventDetails } from "../../../actions/events";
-import { getEventAvailability } from "../../../actions/events";
-import EventDetails from '../[eventid]/_components/EventDetails'
-import BookingForm from '../[eventid]/_components/BookingForm'
+import { getEventDetails, getEventAvailability } from "../../../actions/events";
+import EventDetails from '../[eventid]/_components/EventDetails';
+import BookingForm from '../[eventid]/_components/BookingForm';
 
-export async function generateMetaData({ params }) {
+// This is the correct function name for metadata generation
+export async function generateMetadata({ params }) {
   const event = await getEventDetails(params.username, params.eventId);
 
   if (!event) {
@@ -25,7 +24,6 @@ export default async function EventBookingPage({ params }) {
   const event = await getEventDetails(params.username, params.eventId);
   const availability = await getEventAvailability(params.eventId);
   console.log(availability);
-  
 
   if (!event) {
     notFound();
@@ -35,7 +33,7 @@ export default async function EventBookingPage({ params }) {
     <div className="flex lg:flex-row flex-col justify-center px-4 py-8">
       <EventDetails event={event} />
       <Suspense fallback={<div>Loading booking form...</div>}>
-        <BookingForm  />
+        <BookingForm />
       </Suspense>
     </div>
   );

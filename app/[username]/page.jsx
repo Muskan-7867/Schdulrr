@@ -3,7 +3,7 @@ import { getUserByUsername } from '../../actions/users';
 
 import UserProfile from './UserProfile';
 
-export async function generateMetaDataForUserName({ params }) {
+export async function generateMetadataForUserName({ params }) {
   const user = await getUserByUsername(params.username);
 
   if (!user) {

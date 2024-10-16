@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import { getUserByUsername } from '../../actions/users';
-
 import UserProfile from './UserProfile';
 
-export async function generateMetadataForUserName({ params }) {
+// This is correct usage for generating metadata for dynamic routes in Next.js 13+ using the App Router.
+export async function generateMetadata({ params }) {
   const user = await getUserByUsername(params.username);
 
   if (!user) {
@@ -18,6 +18,7 @@ export async function generateMetadataForUserName({ params }) {
   };
 }
 
+// The page component must also correctly return the JSX for rendering the user profile
 const Userpage = async ({ params }) => {
   const user = await getUserByUsername(params.username);
 

@@ -6,7 +6,7 @@ import BookingForm from '../[eventid]/_components/BookingForm';
 
 // This is the correct function name for metadata generation
 export async function generateMetadata({ params }) {
-  const event = await getEventDetails(params.username, params.eventId);
+  const event = await getEventDetails(params.username, params.eventid);
 
   if (!event) {
     return {
@@ -21,8 +21,11 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function EventBookingPage({ params }) {
-  const event = await getEventDetails(params.username, params.eventId);
-  const availability = await getEventAvailability(params.eventId);
+
+console.log("event", params)
+
+  const event = await getEventDetails(params.username, params.eventid);
+  const availability = await getEventAvailability(params.eventid);
   console.log(availability);
 
   if (!event) {

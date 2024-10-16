@@ -1,7 +1,7 @@
 import React from 'react'
 import { getUserAvailability } from '../../../actions/availability'
 import { defaultAvailability } from './data';
-import AvailabilityForm from '../availability/_components/availabilityForm';
+import AvailabilityForm from '../availability/_components/availabilityform'
 
 
 const AvailabilityPage =  async() => {

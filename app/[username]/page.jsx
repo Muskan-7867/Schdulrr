@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getUserByUsername } from '../../actions/users';
+import { generateMetaData } from '../[username]/[eventid]/page'
 import UserProfile from './UserProfile';
 
 export async function generateMetaData({ params }) {

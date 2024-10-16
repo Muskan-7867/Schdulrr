@@ -149,7 +149,7 @@ export async function getEventAvailability(eventId) {
   const endDate = addDays(startDate , 30);
   const availableDates = [];
 
-  for(let data = startDate; date <= endDate ; date= addDays(date, 1)){
+  for(let date = startDate; date <= endDate ; date= addDays(date, 1)){
     const dayOfWeek = format(date, "EEEE").toUpperCase()
     const dayAvailability = availability.days.find((d) => d.day === dayOfWeek);
 

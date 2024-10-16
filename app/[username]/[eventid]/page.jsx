@@ -6,7 +6,7 @@ import { getEventAvailability } from "../../../actions/events";
 import EventDetails from '../[eventid]/_components/EventDetails'
 import BookingForm from '../[eventid]/_components/BookingForm'
 
-export async function generateMetadata({ params }) {
+export async function generateMetaData({ params }) {
   const event = await getEventDetails(params.username, params.eventId);
 
   if (!event) {

@@ -22,7 +22,6 @@ export async function generateMetadata({ params }) {
 
 export default async function EventBookingPage({ params }) {
 
-console.log("event", params)
 
   const event = await getEventDetails(params.username, params.eventid);
   const availability = await getEventAvailability(params.eventid);
@@ -36,7 +35,7 @@ console.log("event", params)
     <div className="flex lg:flex-row flex-col justify-center px-4 py-8">
       <EventDetails event={event} />
       <Suspense fallback={<div>Loading booking form...</div>}>
-        <BookingForm />
+        <BookingForm  event={event} availability={availability}/>
       </Suspense>
     </div>
   );

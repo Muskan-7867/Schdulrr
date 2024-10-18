@@ -55,7 +55,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     (async () => await funclatestupdate())();
-  }, []);
+  });
 
   return (
     <div className="space-y-8">

@@ -4,10 +4,11 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
-  CardDescription
+  CardDescription, CardFooter
 } from '../../../../components/ui/card';
 import { Calendar, Clock, Video } from "lucide-react";
 import { format } from 'date-fns';
+import { Button } from "../../../../components/ui/button"
 
 const MeetingList = ({ type, meetings }) => {
   if (meetings.length === 0) {

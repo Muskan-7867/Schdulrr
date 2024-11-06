@@ -19,11 +19,7 @@ export default function RootLayout({ children }) {
         <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
         {children}
         </main>
-        <footer className="bg-blue-100 py-12">
-          <div className="text-center px-4 mx-auto container text-gray-600">
-            <p>Made by Me</p>
-          </div>
-        </footer>
+        
         <CreateEventDrawer />
       </body>
     </html>
